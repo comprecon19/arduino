@@ -15,18 +15,16 @@ void loop() {
 
   sensorValue = analogRead(sensorPin); // read the knob
 
-
-// constrain range of knob
+  // constrain range of knob
   //knobValue = constrain(knobValue, 0, 655);
   Serial.print("Sensor: ");
   Serial.print(sensorValue); // see what values you get from knobPin
   
-//  Map the values
+  // Map the values
   sensorValue = map(sensorValue, 320, 380, 0, 255); // match the range of the PWM pin
   Serial.print("Sensor Mapped: ");
   Serial.println(sensorValue); // see what values you get from knobPin
   
   analogWrite(ledPin, sensorValue); // use analogWrite with PWM pins
   
-
 }
