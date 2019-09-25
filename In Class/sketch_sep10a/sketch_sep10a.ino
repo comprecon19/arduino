@@ -1,8 +1,10 @@
 
 int ledPin = 11;
 
-int knobPin = A0;
+int knobPin = A1;
 int knobValue = -1;
+int knobValueMapped = -1;
+int knobValueMappedBlinking = -1;
 
 int switchPin = 7;
 int switchState = -1;
@@ -24,24 +26,20 @@ void loop() {
   Serial.print("switchState = ");
   Serial.println(switchState);
 
-  if ( knobValue > 255 ) {
-    // put your main code here, to run repeatedly:
-    digitalWrite(ledPin, HIGH);
-    Serial.println("Turned LED On");
-    delay(knobValue);
-  
-    knobValue = analogRead(knobPin);
-    Serial.print("knobValue = ");
-    Serial.println(knobValue);
-    
-    digitalWrite(ledPin, LOW);
-    Serial.println("Turned LED Off");
-    delay(knobValue);
-  } else if (knobValue >= 0 && knobValue <= 255) {
-    analogWrite(ledPin, knobValue);
+  if (switchState == 0) {
+    Serial.println("Fade the LED");
+    // fade the LED
+    knobValue = constrain(knobValue, 30, 620);
+    knobValueMapped = map(knobValue, 30, 620, 0, 255);
+    analogWrite(ledPin, knobValueMapped);
   } else {
+    Serial.println("Blink the LED");
+    // blink the LED
+    knobValueMappedBlinking = map(knobValue, 30, 620, 200, 2000);
     digitalWrite(ledPin, HIGH);
+    delay(knobValueMappedBlinking);
+    digitalWrite(ledPin, LOW);
+    delay(knobValueMappedBlinking);
   }
-  
   
 }
